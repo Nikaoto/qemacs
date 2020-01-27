@@ -1,0 +1,62 @@
+# generated-files
+config.mak
+config.h
+fbffonts.c
+# object-directories
+.objs*
+.tobjs*
+.xobjs*
+# target-files
+*.exe
+*.dSYM
+qe
+qe_g
+qe_debug
+tqe
+tqe_g
+xqe
+xqe_g
+fbftoqe
+html2png
+cptoqe
+kmaptoqe
+ligtoqe
+jistoqe
+# temp-directories
+doc
+junk
+patches
+qsn
+# work-directories
+cur
+old
+nnn
+new
+xxx
+# temp-files
+.tags
+f
+m
+t
+tt
+ttt
+# uncommitted-files
+STATS
+BUGS
+DONE
+IDEAS
+.qerc
+cflags.mk
+fnmatch.c
+parser-new.c
+itoa.c
+strtools.c
+lang-discuss.md
+rationale.md
+txl.c
+nim.c
+rebol.c
+elm.c
+jai.c
+ats.c
+quirrel.c
