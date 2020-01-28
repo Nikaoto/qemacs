@@ -78,6 +78,8 @@ static CmdDef basic_commands[] = {
           "backward-word", do_word_right, -1 )
     CMD1( KEY_META('f'), KEY_CTRL_RIGHT,
           "forward-word", do_word_right, 1 )
+    CMD0( KEY_META('m'), KEY_NONE,
+          "goto-indentation", do_goto_indentation )
     CMD1( KEY_META('v'), KEY_PAGEUP,
           "scroll-down", do_scroll_up_down, -2 ) /* u? */
     CMD1( KEY_CTRL('v'), KEY_PAGEDOWN,
@@ -379,7 +381,7 @@ static CmdDef basic_commands[] = {
           "set-auto-coding", do_set_auto_coding, 1)
     CMD1( KEY_NONE, KEY_NONE,
           "set-auto-mode", do_set_next_mode, 0)
-    CMD1( KEY_META('m'), KEY_NONE,
+    CMD1( KEY_NONE, KEY_NONE,
           "set-next-mode", do_set_next_mode, 1)
     CMD1( KEY_NONE, KEY_NONE,
           "set-previous-mode", do_set_next_mode, -1)

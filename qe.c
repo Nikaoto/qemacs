@@ -158,6 +158,8 @@ void qe_register_mode(ModeDef *m, int flags)
             m->move_bof = text_move_bof;
         if (!m->move_eof)
             m->move_eof = text_move_eof;
+        if (!m->goto_indentation)
+            m->goto_indentation = text_goto_indentation;
         if (!m->move_word_left_right)
             m->move_word_left_right = text_move_word_left_right;
         if (!m->scroll_up_down)
@@ -569,6 +571,12 @@ void do_word_right(EditState *s, int dir)
         s->mode->move_word_left_right(s, dir);
 }
 
+void do_goto_indentation(EditState *s)
+{
+    if (s->mode->goto_indentation)
+        s->mode->goto_indentation(s);
+}
+
 void text_move_bof(EditState *s)
 {
     s->offset = 0;
@@ -612,6 +620,19 @@ void word_left(EditState *s, int w)
             break;
         c = eb_prevc(s->b, s->offset, &offset1);
         if (qe_isword(c) == w)
+            break;
+        s->offset = offset1;
+    }
+}
+
+void text_goto_indentation(EditState *s)
+{
+    s->offset = eb_goto_bol(s->b, s->offset);
+    int c, offset1;
+
+    for (;;) {
+        c = eb_nextc(s->b, s->offset, &offset1);
+        if (qe_isblank(c) == 0)
             break;
         s->offset = offset1;
     }
@@ -8459,6 +8480,7 @@ static int generic_mode_init(EditState *s)
 {
     s->offset = min(s->offset, s->b->total_size);
     s->offset_top = min(s->offset_top, s->b->total_size);
+    s->wrap = WRAP_TRUNCATE;
     eb_add_callback(s->b, eb_offset_callback, &s->offset, 0);
     eb_add_callback(s->b, eb_offset_callback, &s->offset_top, 0);
     set_colorize_func(s, NULL);
@@ -8511,6 +8533,7 @@ ModeDef text_mode = {
     .move_bof = text_move_bof,
     .move_eof = text_move_eof,
     .move_word_left_right = text_move_word_left_right,
+    .goto_indentation = text_goto_indentation,
     .scroll_up_down = text_scroll_up_down,
     .mouse_goto = text_mouse_goto,
     .write_char = text_write_char,
