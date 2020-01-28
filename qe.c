@@ -3241,16 +3241,17 @@ void display_init(DisplayState *ds, EditState *e, enum DisplayType do_disp,
     ds->cursor_func = cursor_func;
     ds->cursor_opaque = cursor_opaque;
     ds->wrap = e->wrap;
-    if (ds->wrap == WRAP_AUTO) {
-        /* XXX: check e->mode->default_wrap */
-        /* Behave as WRAP_LINE if window is not at least 75% of full width.
-         * This allows the same default behavior for full width window and
-         * the dired view pane but behaves as WRAP_TRUNCATE on split screens
-         */
-        if (e->width >= e->screen->width * 3 / 4) {
-            ds->wrap = WRAP_LINE;
-        }
-    }
+    /*if (ds->wrap == WRAP_AUTO) {*/
+    /* XXX: check e->mode->default_wrap */
+    /* Behave as WRAP_LINE if window is not at least 75% of full width.
+     * This allows the same default behavior for full width window and
+     * the dired view pane but behaves as WRAP_TRUNCATE on split screens
+     */
+    /*if (e->width >= e->screen->width * 3 / 4) {
+       ds->wrap = WRAP_LINE;
+       }
+       }
+     */
     /* select default values */
     get_style(e, &styledef, QE_STYLE_DEFAULT);
     font = select_font(e->screen, styledef.font_style, styledef.font_size);
@@ -8480,7 +8481,6 @@ static int generic_mode_init(EditState *s)
 {
     s->offset = min(s->offset, s->b->total_size);
     s->offset_top = min(s->offset_top, s->b->total_size);
-    s->wrap = WRAP_TRUNCATE;
     eb_add_callback(s->b, eb_offset_callback, &s->offset, 0);
     eb_add_callback(s->b, eb_offset_callback, &s->offset_top, 0);
     set_colorize_func(s, NULL);
