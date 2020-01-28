@@ -147,6 +147,7 @@ static int makefile_mode_init(EditState *s, EditBuffer *b, int flags)
     if (s) {
         s->b->tab_width = 8;
         s->indent_tabs_mode = 1;
+        s->wrap = WRAP_LINE;
     }
     return 0;
 }
