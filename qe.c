@@ -3709,8 +3709,8 @@ static void flush_fragment(DisplayState *ds)
 
     switch (ds->wrap) {
     case WRAP_TRUNCATE:
-    case WRAP_AUTO:
         break;
+    case WRAP_AUTO:
     case WRAP_LINE:
     case WRAP_TERM:
         while (ds->x > ds->width) {
@@ -8481,7 +8481,6 @@ static int generic_mode_init(EditState *s)
 {
     s->offset = min(s->offset, s->b->total_size);
     s->offset_top = min(s->offset_top, s->b->total_size);
-    s->wrap = WRAP_LINE;
     eb_add_callback(s->b, eb_offset_callback, &s->offset, 0);
     eb_add_callback(s->b, eb_offset_callback, &s->offset_top, 0);
     set_colorize_func(s, NULL);
@@ -8538,6 +8537,7 @@ ModeDef text_mode = {
     .scroll_up_down = text_scroll_up_down,
     .mouse_goto = text_mouse_goto,
     .write_char = text_write_char,
+    .default_wrap = WRAP_LINE,
 };
 
 /* find a resource file */
