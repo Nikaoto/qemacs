@@ -1314,6 +1314,8 @@ static CmdDef dired_commands[] = {
           "dired-enter", dired_select, 1)
     CMD1( KEY_RIGHT, KEY_NONE,
           "dired-right", dired_select, 0)
+    CMD1( 'f', KEY_NONE,
+          "dired-right", dired_select, 0)
     CMD0( KEY_TAB, KEY_NONE,
           "dired-tab", do_other_window)
     /* dired-abort should restore previous buffer in right-window */
@@ -1352,6 +1354,8 @@ static CmdDef dired_commands[] = {
     /* g -> refresh all expanded dirs ? */
     /* l -> relist single directory or marked files ? */
     CMD0( '^', KEY_LEFT,
+          "dired-parent", dired_parent)
+    CMD0( 'b', KEY_NONE,
           "dired-parent", dired_parent)
     /* need commands for splitting, unsplitting, zooming, making subdirs */
     /* h -> info */
