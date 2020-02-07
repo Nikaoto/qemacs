@@ -2184,6 +2184,7 @@ void do_delete_word(EditState *s, int dir);
 int cursor_func(DisplayState *ds,
                 int offset1, int offset2, int line_num,
                 int x, int y, int w, int h, int hex_mode);
+void do_indent_region(EditState *s);
 // should take argval
 void do_scroll_left_right(EditState *s, int dir);
 void do_scroll_up_down(EditState *s, int dir);

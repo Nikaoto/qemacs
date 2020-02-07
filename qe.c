@@ -1758,6 +1758,9 @@ void do_tab(EditState *s, int argval)
     /* CG: should do smart complete, smart indent, insert tab */
     if (s->indent_tabs_mode) {
         do_char(s, 9, argval);
+    } else if (s->region_style && s->b->mark != s->offset) {
+        s->region_style = 0;
+        do_indent_region(s);
     } else {
         int offset = s->offset;
         int offset0 = eb_goto_bol(s->b, offset);
@@ -1778,6 +1781,37 @@ void do_tab(EditState *s, int argval)
 
         s->offset += eb_insert_spaces(s->b, s->offset,
                                       indent * argval - (col % indent));
+    }
+}
+
+void do_indent_region(EditState *s)
+{
+    int col_num, line1, line2;
+
+    /* deactivate region hilite */
+    s->region_style = 0;
+
+    /* Swap point and mark so mark <= point */
+    if (s->offset < s->b->mark) {
+        int tmp = s->b->mark;
+        s->b->mark = s->offset;
+        s->offset = tmp;
+    }
+    /* We do it with lines to avoid offset variations during indenting */
+    eb_get_pos(s->b, &line1, &col_num, s->b->mark);
+    eb_get_pos(s->b, &line2, &col_num, s->offset);
+
+    if (col_num == 0)
+        line2--;
+
+    /* Iterate over all lines inside block */
+    for (; line1 <= line2; line1++) {
+        if (s->mode->indent_func) {
+            (s->mode->indent_func)(s, eb_goto_pos(s->b, line1, 0));
+        } else {
+            s->offset = eb_goto_pos(s->b, line1, 0);
+            do_tab(s, 1);
+        }
     }
 }
 

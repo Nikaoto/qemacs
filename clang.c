@@ -1037,7 +1037,10 @@ static void c_indent_line(EditState *s, int offset0)
 
 static void do_c_indent(EditState *s)
 {
-    if (eb_is_in_indentation(s->b, s->offset)
+    if (s->region_style && s->b->mark != s->offset) {
+        s->region_style = 0;
+        do_indent_region(s);
+    } else if (eb_is_in_indentation(s->b, s->offset)
     &&  s->qe_state->last_cmd_func != (CmdFunc)do_c_indent) {
         c_indent_line(s, s->offset);
     } else {
