@@ -1686,11 +1686,21 @@ static void lua_colorize_line(QEColorizeContext *cp,
     cp->colorize_state = state;
 }
 
+static int lua_mode_init(EditState *s, EditBuffer *b, int flags)
+{
+    if (s) {
+        s->b->tab_width = 3;
+        s->indent_size = 3;
+    }
+    return 0;
+}
+
 static ModeDef lua_mode = {
     .name = "Lua",
     .extensions = "lua",
     .shell_handlers = "lua",
     .keywords = lua_keywords,
+    .mode_init = lua_mode_init,
     .colorize_func = lua_colorize_line,
 };
 
