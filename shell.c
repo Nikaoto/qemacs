@@ -3088,7 +3088,7 @@ static CmdDef shell_commands[] = {
           "shell-refresh", do_shell_refresh)
     CMD2( KEY_CTRL('k'), KEY_NONE,
           "shell-kill-line", do_shell_kill_line, ESi, "ui")
-    CMD2( KEY_META('k'), KEY_NONE,
+    CMD2( KEY_CTRL('u'), KEY_META('k'),
           "shell-kill-beginning-of-line", do_shell_kill_beginning_of_line, ESi, "ui")
     CMD2( KEY_CTRL('y'), KEY_NONE,
           "shell-yank", do_shell_yank, ES, "*")
