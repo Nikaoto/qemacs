@@ -54,15 +54,15 @@ static CmdDef basic_commands[] = {
 
 #ifdef CONFIG_UNICODE_JOIN
     /* Insert combining accent: combine with letter if possible */
-    CMD3( KEY_META('`'), KEY_NONE,
+    CMD3( KEY_NONE, KEY_NONE,
           "combine-grave-accent", do_combine_char, ESi, 0x300, "*v")
-    CMD3( KEY_META('\''), KEY_NONE,
+    CMD3( KEY_NONE, KEY_NONE,
           "combine-acute-accent", do_combine_char, ESi, 0x301, "*v")
-    CMD3( KEY_META('^'), KEY_NONE,
+    CMD3( KEY_NONE, KEY_NONE,
           "combine-circumflex-accent", do_combine_char, ESi, 0x302, "*v")
-    CMD3( KEY_META('"'), KEY_NONE,
+    CMD3( KEY_NONE, KEY_NONE,
           "combine-diaeresis", do_combine_char, ESi, 0x308, "*v")
-    CMD3( KEY_META('~'), KEY_NONE,
+    CMD3( KEY_NONE, KEY_NONE,
           "combine-tilde", do_combine_char, ESi, 0x303, "*v")
 #endif
 
