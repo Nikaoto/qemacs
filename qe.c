@@ -1756,11 +1756,11 @@ void do_overwrite_mode(EditState *s, int argval)
 void do_tab(EditState *s, int argval)
 {
     /* CG: should do smart complete, smart indent, insert tab */
-    if (s->indent_tabs_mode) {
-        do_char(s, 9, argval);
-    } else if (s->region_style && s->b->mark != s->offset) {
+    if (s->region_style && s->b->mark != s->offset) {
         s->region_style = 0;
         do_indent_region(s);
+    } else if (s->indent_tabs_mode) {
+        do_char(s, 9, argval);
     } else {
         int offset = s->offset;
         int offset0 = eb_goto_bol(s->b, offset);
