@@ -3107,8 +3107,10 @@ static CmdDef shell_commands[] = {
 
 /* shell global commands */
 static CmdDef shell_global_commands[] = {
-    CMD2( KEY_CTRLXRET('\r'), KEY_NONE,
-          "shell", do_shell, ESi, "ui")
+    CMD1( KEY_CTRLXRET('\r'), KEY_NONE,
+          "shell", do_shell, 1)
+    CMD2( KEY_NONE, KEY_NONE,
+          "smart-shell", do_shell, ESi, "ui")
     CMD2( KEY_META('!'), KEY_NONE,
           "shell-command", do_shell_command, ESs,
           "s{Shell command: }|shell-command|")
