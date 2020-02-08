@@ -1340,6 +1340,12 @@ void text_scroll_up_down(EditState *s, int dir)
 /* XXX: make it generic to all modes */
 void do_center_cursor(EditState *s, int force)
 {
+    // Refresh if do_center_cursor called twice in a row
+    if (s->qe_state->last_cmd_func == (CmdFunc)do_center_cursor) {
+        do_refresh_complete(s);
+        return;
+    }
+
     CursorContext cm;
 
     /* only apply to text modes */
@@ -7748,14 +7754,8 @@ void do_refresh(EditState *s1)
 void do_refresh_complete(EditState *s)
 {
     QEmacsState *qs = s->qe_state;
-
     qs->complete_refresh = 1;
-
-    if (s->qe_state->last_cmd_func == (CmdFunc)do_refresh_complete) {
-        do_center_cursor(s, 1);
-    } else {
-        do_refresh(s);
-    }
+    do_refresh(s);
 }
 
 void do_other_window(EditState *s)
