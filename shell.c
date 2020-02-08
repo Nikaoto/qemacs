@@ -248,9 +248,10 @@ static int run_process(const char *cmd, int *fd_ptr, int *pid_ptr,
         if (fd0 != 0 || fd1 != 1 || fd2 != 2) {
             setenv("QE-STATUS", "invalid handles", 1);
         }
-#ifdef CONFIG_DARWIN
-        setsid();
-#endif
+// TODO setsid() enables job control on osx, but causes crash when shell buffer is killed before exiting
+//#ifdef CONFIG_DARWIN
+//        setsid();
+//#endif
         if (shell_flags & SF_INFINITE) {
             rows += QE_TERM_YSIZE_INFINITE;
         }
