@@ -437,16 +437,16 @@ void do_toggle_control_h(EditState *s, int set)
 void do_set_emulation(EditState *s, const char *name)
 {
     QEmacsState *qs = s->qe_state;
-
-    if (strequal(name, "epsilon")) {
+    if (strequal(name, "nika")) {
+        qs->emulation_flags = 1;
+        qs->flag_split_window_change_focus = 0;
+    } else if (strequal(name, "epsilon")) {
         qs->emulation_flags = 1;
         qs->flag_split_window_change_focus = 1;
-    } else
-    if (strequal(name, "emacs") || strequal(name, "xemacs")) {
+    } else if (strequal(name, "emacs") || strequal(name, "xemacs")) {
         qs->emulation_flags = 0;
         qs->flag_split_window_change_focus = 0;
-    } else
-    if (strequal(name, "vi") || strequal(name, "vim")) {
+    } else if (strequal(name, "vi") || strequal(name, "vim")) {
         put_status(s, "Emulation '%s' not available yet", name);
     } else {
         put_status(s, "Unknown emulation '%s'", name);
@@ -9031,8 +9031,12 @@ static void qe_init(void *opaque)
     qs->argv = argv;
 
     qs->hilite_region = 1;
-    qs->default_tab_width = 8;
-    qs->default_fill_column = 70;
+    qs->default_tab_width = 4;
+    qs->default_fill_column = 80;
+    qs->backup_inhibited = 1;
+    qs->fuzzy_search = 1; // fuzzy command completion
+    qs->emulation_flags = 1; // modern-style isearch
+    qs->flag_split_window_change_focus = 0;
     qs->mmap_threshold = MIN_MMAP_SIZE;
     qs->max_load_size = MAX_LOAD_SIZE;
 
