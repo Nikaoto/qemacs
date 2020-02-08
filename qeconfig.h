@@ -247,7 +247,7 @@ static CmdDef basic_commands[] = {
     CMD0( KEY_CTRLX('p'), KEY_NONE,
           "previous-window", do_previous_window)
 #ifndef CONFIG_TINY
-    CMD1( KEY_META(KEY_CTRL('l')), KEY_NONE,
+    CMD1( KEY_CTRL('l'), KEY_NONE,
           "center-cursor", do_center_cursor, 1)
     CMD1( KEY_CTRL('x'), KEY_UP,
           "find-window-up", do_find_window, KEY_UP)
@@ -344,7 +344,7 @@ static CmdDef basic_commands[] = {
 
     CMD2( KEY_CTRLX(KEY_CTRL('c')), KEY_NONE,
           "exit-qemacs", do_exit_qemacs, ESi, "ui")
-    CMD0( KEY_CTRL('l'), KEY_NONE,
+    CMD0( KEY_META(KEY_CTRL('l')), KEY_NONE,
           "refresh", do_refresh_complete)
     CMD0( KEY_CTRLX('u'), KEY_CTRL('_'),
           "undo", do_undo)
