@@ -986,12 +986,11 @@ void do_backspace(EditState *s, int argval)
         return;
 
     if (argval == NO_ARG) {
-        if (s->qe_state->last_cmd_func == (CmdFunc)do_tab
+        /*if (s->qe_state->last_cmd_func == (CmdFunc)do_tab
         &&  !s->indent_tabs_mode) {
-            /* Delete tab or indentation? */
             do_undo(s);
             return;
-        }
+        }*/
         if (s->qe_state->last_cmd_func != (CmdFunc)do_append_next_kill) {
             offset1 = eb_prev(s->b, s->offset);
             if (offset1 < s->offset) {
