@@ -109,7 +109,7 @@ static enum time_format dired_time_format;
 static int dired_show_dot_files = 1;
 static int dired_show_ds_store = 0;
 static int dired_nflag = 0; /* 0=name, 1=numeric, 2=hidden */
-static int dired_hflag = 0; /* 0=exact, 1=human-decimal, 2=human-binary */
+static int dired_hflag = 2; /* 0=exact, 1=human-decimal, 2=human-binary */
 static int dired_sort_mode = DIRED_SORT_GROUP | DIRED_SORT_NAME;
 
 static QVarType dired_sort_mode_set_value(EditState *s, VarDef *vp,
@@ -1319,7 +1319,7 @@ static CmdDef dired_commands[] = {
     CMD0( KEY_TAB, KEY_NONE,
           "dired-tab", do_other_window)
     /* dired-abort should restore previous buffer in right-window */
-    CMD1( KEY_CTRL('g'), KEY_NONE,
+    CMD1( KEY_CTRLX(KEY_CTRL('g')), KEY_NONE,
           "dired-abort", do_delete_window, 0)
     /* XXX: merge with other dired-next-line */
     CMD1( ' ', KEY_DOWN,

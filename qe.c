@@ -9029,6 +9029,7 @@ static void qe_init(void *opaque)
     qs->argc = argc;
     qs->argv = argv;
 
+    /* Init configs */
     qs->hilite_region = 1;
     qs->default_tab_width = 4;
     qs->default_fill_column = 80;
