@@ -1965,6 +1965,7 @@ struct InputMethod {
 };
 
 void register_input_method(InputMethod *m);
+InputMethod *find_input_method(const char *name);
 void do_set_input_method(EditState *s, const char *method);
 void do_switch_input_method(EditState *s);
 void init_input_methods(void);

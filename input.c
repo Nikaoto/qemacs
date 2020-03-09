@@ -90,7 +90,7 @@ static void input_completion(CompleteState *cp)
     }
 }
 
-static InputMethod *find_input_method(const char *name)
+InputMethod *find_input_method(const char *name)
 {
     QEmacsState *qs = &qe_state;
     InputMethod *m;

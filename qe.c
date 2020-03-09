@@ -9120,6 +9120,13 @@ static void qe_init(void *opaque)
         s = qs->active_window;
     }
 
+    /* Set primary input method to English, secondary to Georgian */
+    InputMethod *m = find_input_method("Georgian");
+    if (m) {
+        s->input_method = NULL;
+        s->selected_input_method = m;
+    }
+
     qe_key_init(&key_ctx);
 
     /* select the suitable display manager */
