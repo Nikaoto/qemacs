@@ -218,7 +218,7 @@ static CmdDef basic_commands[] = {
           "start-kbd-macro", do_start_macro)
     CMD0( KEY_CTRLX(')'), KEY_NONE,
           "end-kbd-macro", do_end_macro)
-    CMD0( KEY_CTRLX('e'), KEY_CTRL('\\'),
+    CMD0( KEY_CTRLX('e'), KEY_NONE,
           "call-last-kbd-macro", do_call_macro)
     CMD2( KEY_NONE, KEY_NONE,
           "define-kbd-macro", do_define_kbd_macro, ESsss,
@@ -314,7 +314,7 @@ static CmdDef basic_commands[] = {
     CMD2( KEY_CTRLXRET(KEY_CTRL('\\')), KEY_CTRLC(KEY_CTRL('\\')),
           "set-input-method", do_set_input_method, ESs,
           "s{Input method: }[input]")
-    CMD0( KEY_CTRLX(KEY_CTRL('\\')), KEY_NONE,
+    CMD0( KEY_CTRL('\\'), KEY_CTRLX(KEY_CTRL('\\')),
           "switch-input-method", do_switch_input_method)
 
     /*---------------- Styles & display ----------------*/
