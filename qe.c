@@ -1768,7 +1768,7 @@ void do_tab(EditState *s, int argval)
         s->region_style = 0;
         do_indent_region(s);
     } else if (s->indent_tabs_mode) {
-        do_char(s, 9, argval);
+        do_char(s, '\t', argval);
     } else {
         int offset = s->offset;
         int offset0 = eb_goto_bol(s->b, offset);

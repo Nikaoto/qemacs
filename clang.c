@@ -769,9 +769,13 @@ static void insert_indent(EditState *s, int offset, int i, int *offset_ptr)
     *offset_ptr = offset;
 }
 
+static void simple_indent_line(EditState *s, int offset);
+
 /* indent a line of C code starting at <offset> */
 static void c_indent_line(EditState *s, int offset0)
 {
+    simple_indent_line(s, offset0);
+    return;
     int offset, offset1, offsetl, c, pos, line_num, col_num;
     int i, j, eoi_found, len, pos1, lpos, style, line_num1, state;
     unsigned int buf[COLORED_MAX_LINE_SIZE], *p;
@@ -1024,7 +1028,7 @@ static void c_indent_line(EditState *s, int offset0)
         /* XXX: unary prefix operators: ! ~ - + & * ++ -- */
         /* XXX: postfix operators: ++ -- -> . [ */
         /* XXX: grouping operators: ( ) [ ] */
-        /* XXX: binary operators: = == === != !== < > <= >= && || 
+        /* XXX: binary operators: = == === != !== < > <= >= && ||
         ^ & | + - * / % << >> ^= &= |= += -= *= /= %= <<= >>= ? : */
         /* XXX: sequence operators: , ; */
     }
@@ -1080,7 +1084,7 @@ static void do_c_return(EditState *s)
             from = offset;
         eb_delete_range(s->b, from, to);
         offset = from;
-            
+
         (s->mode->indent_func)(s, eb_goto_bol(s->b, offset));
         (s->mode->indent_func)(s, s->offset);
     }
@@ -2173,6 +2177,71 @@ static const char go_types[] = {
 };
 
 /* Go identifiers start with a Unicode letter or _ */
+
+static void simple_indent_line(EditState *s, int offset)
+{
+    int bol = eb_goto_bol(s->b, offset);
+    int prev_line_last_char_offset, prev_line_last_char;
+    eb_prevc(s->b, bol, &prev_line_last_char_offset);
+    prev_line_last_char = eb_prevc(s->b, prev_line_last_char_offset, &prev_line_last_char_offset);
+    int prev_line_bol = eb_goto_bol(s->b, prev_line_last_char_offset);
+
+    int indent_count = 0;
+    unsigned char indent_char;
+
+    if (s->indent_tabs_mode) {
+        indent_char = '\t';
+    } else {
+        indent_char = ' ';
+    }
+
+    // Count occurences of indent_char in indentation of previous line
+    int off = prev_line_bol;
+    int off1;
+    while (eb_nextc(s->b, off, &off1) == indent_char) {
+        indent_count += 1;
+        off = off1;
+    }
+
+    // Subtract occurences of indent_char in indentation of current line
+    off = bol;
+    while (eb_nextc(s->b, off, &off1) == indent_char) {
+        indent_count -= 1;
+        off = off1;
+    }
+
+    // Indent by one more unit if opening detected
+    int indent_extra_unit = 0;
+    switch (prev_line_last_char) {
+    case '{':
+    case '[':
+    case '(':
+    case '<':
+        indent_extra_unit = 1;
+        indent_count += 1;
+        break;
+    }
+
+    // Indent line
+    if (indent_count > 0) {
+        indent_count -= indent_extra_unit;
+        if (indent_extra_unit) {
+            if (indent_char == '\t') {
+                eb_insert_uchars(s->b, bol, indent_char, indent_count + 1);
+            } else {
+                eb_insert_uchars(s->b, bol, indent_char, indent_count + s->indent_size);
+            }
+        } else {
+            eb_insert_uchars(s->b, bol, indent_char, indent_count);
+        }
+        // TODO add eb_eoi and replace do_goto_indentation fn with do_goto_eoi fn
+        //s->offset += eb_eoi(s->b, offset);
+        do_goto_indentation(s);
+        //s->offset += eb_insert_uchars(s->b, bol, indent_char, indent_count);
+    } else {
+        do_tab(s, 1);
+    }
+}
 
 static int go_mode_init(EditState *s, EditBuffer *b, int flags)
 {
