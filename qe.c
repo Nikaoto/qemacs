@@ -206,6 +206,9 @@ void qe_register_mode(ModeDef *m, int flags)
         def[1].val = 1;  /* flag as allocated for free-all */
         qe_register_cmd_table(def, NULL);
     }
+
+    /* nika: overwrite auto_indent to be 0 */
+    m->auto_indent = 0;
 }
 
 void mode_completion(CompleteState *cp)
@@ -9029,7 +9032,7 @@ static void qe_init(void *opaque)
     qs->argc = argc;
     qs->argv = argv;
 
-    /* Init configs */
+    /* nika: Init configs */
     qs->hilite_region = 1;
     qs->default_tab_width = 4;
     qs->default_fill_column = 80;
