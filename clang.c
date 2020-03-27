@@ -1253,6 +1253,17 @@ static int c_mode_probe(ModeDef *mode, ModeProbeData *p)
     return 1;
 }
 
+static int c_mode_init(EditState *s, EditBuffer *b, int flags)
+{
+    /* nika */
+    if (s) {
+        s->indent_tabs_mode = 0;
+        s->b->tab_width = 4;
+        s->indent_size = 4;
+    }
+    return 0;
+}
+
 ModeDef c_mode = {
     .name = "C",
     .extensions = c_extensions,
@@ -1264,6 +1275,7 @@ ModeDef c_mode = {
     .types = c_types,
     .indent_func = c_indent_line,
     .auto_indent = 1,
+    .mode_init = c_mode_init,
 };
 
 /* XXX: support Yacc / Bison syntax extensions */
@@ -2162,6 +2174,17 @@ static const char go_types[] = {
 
 /* Go identifiers start with a Unicode letter or _ */
 
+static int go_mode_init(EditState *s, EditBuffer *b, int flags)
+{
+    /* nika */
+    if (s) {
+        s->indent_tabs_mode = 1;
+        s->b->tab_width = 4;
+        s->indent_size = 4;
+    }
+    return 0;
+}
+
 static ModeDef go_mode = {
     .name = "Go",
     .extensions = "go",
@@ -2171,6 +2194,7 @@ static ModeDef go_mode = {
     .types = go_types,
     .indent_func = c_indent_line,
     .auto_indent = 1,
+    .mode_init = go_mode_init,
     .fallback = &c_mode,
 };
 
