@@ -1688,7 +1688,9 @@ static void lua_colorize_line(QEColorizeContext *cp,
 
 static int lua_mode_init(EditState *s, EditBuffer *b, int flags)
 {
+    /* nika */
     if (s) {
+        s->indent_tabs_mode = 0;
         s->b->tab_width = 3;
         s->indent_size = 3;
     }
