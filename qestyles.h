@@ -35,31 +35,31 @@
 
     /* Generic syntax coloring styles */
     STYLE_DEF(QE_STYLE_COMMENT, "comment",
-              QERGB(0xf8, 0x44, 0x00), COLOR_TRANSPARENT,
+              QERGB(0x9e, 0x9e, 0x9e), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_PREPROCESS, "preprocess",
               QERGB(0x00, 0xff, 0xff), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_STRING, "string",
-              QERGB(0xf8, 0xa0, 0x78), COLOR_TRANSPARENT,
+              QERGB(0x87, 0xff, 0x00), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_STRING_Q, "string-q",
-              QERGB(0xf8, 0xa0, 0x78), COLOR_TRANSPARENT,
+              QERGB(0x87, 0xff, 0x00), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_KEYWORD, "keyword",
-              QERGB(0x00, 0xff, 0xff), COLOR_TRANSPARENT,
+              QERGB(0xff, 0xff, 0xff), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_NUMBER, "number",
-              QERGB(0xf8, 0xd8, 0xb0), COLOR_TRANSPARENT,
+              QERGB(0xff, 0x87, 0xaf), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_FUNCTION, "function",
-              QERGB(0x80, 0xcc, 0xf0), COLOR_TRANSPARENT,
+              QERGB(0xf8, 0xd8, 0xb0), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_VARIABLE, "variable",
-              QERGB(0xe8, 0xdc, 0x80), COLOR_TRANSPARENT,
+              QERGB(0xf8, 0xd8, 0xb0), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_TYPE, "type",
-              QERGB(0x98, 0xf8, 0x98), COLOR_TRANSPARENT,
+              QERGB(0xff, 0xff, 0xff), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_TAG, "tag",
               QERGB(0x00, 0xff, 0xff), COLOR_TRANSPARENT,
@@ -84,10 +84,10 @@
 
     /* HTML coloring styles */
     STYLE_DEF(QE_STYLE_HTML_COMMENT, "html-comment",
-              QERGB(0xf8, 0x44, 0x00), COLOR_TRANSPARENT,
+              QERGB(0x9e, 0x9e, 0x9e), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_HTML_STRING, "html-string",
-              QERGB(0xf8, 0xa0, 0x78), COLOR_TRANSPARENT,
+              QERGB(0x87, 0xff, 0x00), COLOR_TRANSPARENT,
               0, 0)
     STYLE_DEF(QE_STYLE_HTML_ENTITY, "html-entity",
               QERGB(0xe8, 0xdc, 0x80), COLOR_TRANSPARENT,
