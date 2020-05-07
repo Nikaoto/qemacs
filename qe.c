@@ -5803,6 +5803,13 @@ void switch_to_buffer(EditState *s, EditBuffer *b)
                 s->wrap = mode ? mode->default_wrap : WRAP_AUTO;
             }
         }
+
+        /* nika: Set default primary and secondary input methods */
+        if (!s->input_method)
+            s->input_method = s->qe_state->default_input_method;
+        if (!s->selected_input_method)
+            s->selected_input_method = s->qe_state->default_selected_input_method;
+
         /* validate the mode */
         if (!mode)
             mode = b->default_mode;
@@ -9123,13 +9130,6 @@ static void qe_init(void *opaque)
         s = qs->active_window;
     }
 
-    /* Set primary input method to English, secondary to Georgian */
-    InputMethod *m = find_input_method("Georgian");
-    if (m) {
-        s->input_method = NULL;
-        s->selected_input_method = m;
-    }
-
     qe_key_init(&key_ctx);
 
     /* select the suitable display manager */
@@ -9205,6 +9205,18 @@ static void qe_init(void *opaque)
         s = qs->active_window;
     }
 #endif
+
+    /* nika: Set default primary input method to English (NULL) */
+    qs->default_input_method = NULL;
+    /* nika: Set default secondary input method to Georgian */
+    InputMethod *geo_input_method = find_input_method("Georgian");
+    if (geo_input_method) {
+        qs->default_selected_input_method = geo_input_method;
+    }
+
+    /* nika: Set input methods to defaults for first buffer */
+    s->input_method = qs->default_input_method;
+    s->selected_input_method = qs->default_selected_input_method;
 
     put_status(s, "QEmacs %s - Press F1 for help", QE_VERSION);
 

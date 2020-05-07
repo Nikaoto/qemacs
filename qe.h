@@ -1409,6 +1409,13 @@ struct EditState {
 
     QETermStyle default_style;  /* default text style */
 
+    /* compose state for input method */
+    InputMethod *input_method; /* current input method */
+    InputMethod *selected_input_method; /* selected input method (used to switch) */
+    int compose_len;
+    int compose_start_offset;
+    unsigned int compose_buf[20];
+
     /* after this limit, the fields are not saved into the buffer */
     int end_of_saved_data;
 
@@ -1470,12 +1477,7 @@ struct EditState {
     char modeline_shadow[MAX_SCREEN_WIDTH];
     OWNED QELineShadow *line_shadow; /* per window shadow CRC data */
     int shadow_nb_lines;
-    /* compose state for input method */
-    InputMethod *input_method; /* current input method */
-    InputMethod *selected_input_method; /* selected input method (used to switch) */
-    int compose_len;
-    int compose_start_offset;
-    unsigned int compose_buf[20];
+
     OWNED EditState *next_window;
 };
 
@@ -1634,6 +1636,8 @@ struct QEmacsState {
     //struct QETimer *first_timer;
     struct VarDef *first_variable;
     InputMethod *input_methods;
+    InputMethod *default_input_method;
+    InputMethod *default_selected_input_method;
     EditState *first_window;
     EditState *active_window; /* window in which we edit */
     EditBuffer *first_buffer;
