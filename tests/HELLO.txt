@@ -38,7 +38,7 @@ Middle Near East/Africa:
   Arabic			ﺍﻟﺴﻼﻡ ﻋﻠﻴﻜﻢ
   Arabic (Pango)		السَّلام عليكُم 
   Arabic (اَلْعَرَبِيَّةُ)‎	اَلسَّلَامُ عَلَيْكُم
-  Georgian (ქართველი)		გამარჯობა
+  Georgian (ქართული)		გამარჯობა
   Hebrew			שלום
   Hebrew (עִבְרִית)‎		שָׁלוֹם
   Persian (فارسی)‎		سلام عليکم
