@@ -1570,7 +1570,7 @@ static const char js_keywords[] = {
     /* strict mode quasi keywords */
     "eval|arguments|"
     /* ES6 extra keywords */
-    "await|"
+    "await|async|"
 };
 
 static const char js_types[] = {
