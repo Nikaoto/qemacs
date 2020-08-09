@@ -108,6 +108,7 @@ static time_t dired_curtime;
 static enum time_format dired_time_format;
 static int dired_show_dot_files = 1;
 static int dired_show_ds_store = 0;
+static off_t dired_preview_max_filesize = 45 * 1000 * 1000; /* 45 MB */
 static int dired_nflag = 0; /* 0=name, 1=numeric, 2=hidden */
 static int dired_hflag = 2; /* 0=exact, 1=human-decimal, 2=human-binary */
 static int dired_sort_mode = DIRED_SORT_GROUP | DIRED_SORT_NAME;
@@ -124,6 +125,7 @@ static VarDef dired_variables[] = {
             dired_time_format_set_value )
     G_VAR( "dired-show-dot-files", dired_show_dot_files, VAR_NUMBER, VAR_RW_SAVE )
     G_VAR( "dired-show-ds-store", dired_show_ds_store, VAR_NUMBER, VAR_RW_SAVE )
+    G_VAR( "dired-preview-max-filesize", dired_preview_max_filesize, VAR_NUMBER, VAR_RW_SAVE )
 };
 
 static inline DiredState *dired_get_state(EditState *e, int status)
@@ -1077,16 +1079,34 @@ static EditState *dired_view_file(EditState *s, const char *filename)
      * new buffer as BF_PREVIEW, to trigger paging mode and so that it
      * will get freed if closed.
      */
+
+    /* nika */
+    /* Check if too large to preview */
+    struct stat st;
+    if (stat(filename, &st) < 0) {
+        goto loadfail;
+    } else {
+        /* File too large */
+        if (st.st_size > dired_preview_max_filesize) {
+            b = eb_new("*scratch*", BF_SAVELOG | BF_UTF8 | BF_PREVIEW);
+            eb_printf(b, "File larger than dired-preview-max-filesize %s", filename);
+            switch_to_buffer(e, b);
+            return NULL;
+        }
+    }
+
     rc = qe_load_file(e, filename, LF_NOWILDCARD, BF_PREVIEW);
     if (rc >= 0) {
         return e;
     } else {
+loadfail:
         /* if file failed to load, show a scratch buffer */
         b = eb_new("*scratch*", BF_SAVELOG | BF_UTF8 | BF_PREVIEW);
         eb_printf(b, "Cannot load file %s", filename);
         switch_to_buffer(e, b);
         return NULL;
     }
+
 }
 
 static void dired_execute(EditState *s)
