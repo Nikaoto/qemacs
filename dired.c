@@ -769,12 +769,11 @@ static void dired_update_buffer(DiredState *ds, EditBuffer *b, EditState *s,
 
         eb_printf(b, "%s", dip->name);
 
-        if (1) {
-            int trailchar = get_trailchar(dip->mode);
-            if (trailchar) {
-                eb_printf(b, "%c", trailchar);
-            }
+        int trailchar = get_trailchar(dip->mode);
+        if (trailchar) {
+            eb_printf(b, "%c", trailchar);
         }
+
         if (S_ISLNK(dip->mode)
         &&  getentryslink(buf, sizeof(buf), ds->path, dip->name)) {
             eb_printf(b, " -> %s", buf);
