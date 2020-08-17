@@ -162,7 +162,7 @@ ifdef CONFIG_X11
   XCFLAGS:= -DCONFIG_X11 $(CFLAGS)
   TARGETS += xqe$(EXE)
   XOBJS := x11.o
-  XLIBS :=
+  XLIBS := $(LIBS)
   ifdef CONFIG_XRENDER
     XLIBS += -lXrender
   endif
