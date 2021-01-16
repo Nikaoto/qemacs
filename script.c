@@ -288,6 +288,17 @@ static int shell_script_mode_probe(ModeDef *mode, ModeProbeData *p)
     return 1;
 }
 
+/* nika */
+static int sh_mode_init(EditState *s, EditBuffer *b, int flags)
+{
+    if (s) {
+        s->indent_tabs_mode = 0;
+        s->b->tab_width = 8;
+        s->indent_size = 4;
+    }
+    return 0;
+}
+
 /* XXX: should have shell specific variations */
 static ModeDef sh_mode = {
     .name = "Shell",
@@ -295,6 +306,7 @@ static ModeDef sh_mode = {
     .extensions = "sh",
     .shell_handlers = "sh",
     .mode_probe = shell_script_mode_probe,
+    .mode_init = sh_mode_init,
     .colorize_func = shell_script_colorize_line,
     .keywords = shell_script_keywords,
 };
@@ -304,6 +316,7 @@ static ModeDef bash_mode = {
     .extensions = "bash",
     .shell_handlers = "bash",
     .mode_probe = shell_script_mode_probe,
+    .mode_init = sh_mode_init,
     .colorize_func = shell_script_colorize_line,
     .keywords = shell_script_keywords,
 };
@@ -313,6 +326,7 @@ static ModeDef csh_mode = {
     .extensions = "csh",
     .shell_handlers = "csh",
     .mode_probe = shell_script_mode_probe,
+    .mode_init = sh_mode_init,
     .colorize_func = shell_script_colorize_line,
     .keywords = shell_script_keywords,
 };
@@ -331,6 +345,7 @@ static ModeDef zsh_mode = {
     .extensions = "zsh",
     .shell_handlers = "zsh",
     .mode_probe = shell_script_mode_probe,
+    .mode_init = sh_mode_init,
     .colorize_func = shell_script_colorize_line,
     .keywords = shell_script_keywords,
 };
@@ -340,6 +355,7 @@ static ModeDef tcsh_mode = {
     .extensions = "tcsh",
     .shell_handlers = "tcsh",
     .mode_probe = shell_script_mode_probe,
+    .mode_init = sh_mode_init,
     .colorize_func = shell_script_colorize_line,
     .keywords = shell_script_keywords,
 };
