@@ -1846,6 +1846,7 @@ ModeDef js_mode = {
     .keywords = js_keywords,
     .types = js_types,
     .indent_func = c_indent_line,
+    .mode_init = c_mode_init,
     .auto_indent = 1,
     .fallback = &c_mode,
 };
