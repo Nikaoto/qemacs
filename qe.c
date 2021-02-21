@@ -1792,6 +1792,96 @@ void do_tab(EditState *s, int argval)
     }
 }
 
+/* Untabs current line. Returns offset from indentation */
+int do_untab_one_line(EditState *s)
+{
+    /* For restoring point correctly */
+    int point = s->offset;
+    do_goto_indentation(s);
+    int offset_from_ind = point - s->offset;
+
+    /* No indentation to remove */
+    if (eb_at_bol(s->b, s->offset)) {
+        s->offset += offset_from_ind;
+        return offset_from_ind;
+    }
+
+    if (s->indent_tabs_mode) {
+        if (eb_read_one_byte(s->b, eb_prev(s->b, s->offset)) == '\t') {
+            eb_prevc(s->b, s->offset, &s->offset);
+            eb_delete_uchar(s->b, s->offset);
+        }
+    } else if (eb_read_one_byte(s->b, eb_prev(s->b, s->offset)) == ' ') {
+        for (int del = 0; del < s->indent_size &&
+                 !eb_at_bol(s->b, s->offset); del++) {
+            eb_delete_chars(s->b, s->offset, -1);
+        }
+    }
+
+    /* Point was at indentation */
+    if (offset_from_ind == 0) {
+        return 0;
+    }
+
+    /* Point was before indentation */
+    if (offset_from_ind < 0) {
+        int off = 0; /* Final offset from indentation */
+        while (off != offset_from_ind && !eb_at_bol(s->b, s->offset)) {
+            s->offset -= 1;
+            off -= 1;
+        }
+
+        return off;
+    }
+
+    /* Point was after indentation */
+    s->offset += offset_from_ind;
+    return offset_from_ind;
+}
+
+void do_untab(EditState *s)
+{
+    if (s->region_style && s->b->mark != s->offset) {
+        int swapped = 0;
+
+        /* Put point before mark */
+        if (s->offset > s->b->mark) {
+            swapped = 1;
+            int tmp = s->b->mark;
+            s->b->mark = s->offset;
+            s->offset = tmp;
+        }
+
+        /* Count number of lines we need to indent */
+        int linecount = 0;
+        int save = s->offset;
+        while (s->offset < s->b->mark) {
+            linecount++;
+            s->offset = eb_next_line(s->b, s->offset);
+        }
+        s->offset = save;
+
+        for (int i = 0; i < linecount; i++) {
+            do_untab_one_line(s);
+            s->offset = eb_next_line(s->b, s->offset);
+        }
+
+        /* Go back up */
+        for (int i = 0; i < linecount; i++) {
+            s->offset = eb_prev_line(s->b, s->offset);
+        }
+
+        /* Swap point and mark back */
+        if (swapped) {
+            int tmp = s->b->mark;
+            s->b->mark = s->offset;
+            s->offset = tmp;
+        }
+    } else {
+        do_untab_one_line(s);
+    }
+}
+
 void do_indent_region(EditState *s)
 {
     int col_num, line1, line2;
