@@ -2786,6 +2786,11 @@ void do_set_indent_tabs_mode(EditState *s, int val)
     s->indent_tabs_mode = (val != 0);
 }
 
+void do_toggle_indent_tabs_mode(EditState *s)
+{
+    s->indent_tabs_mode = !s->indent_tabs_mode;
+}
+
 static void do_set_fill_column(EditState *s, int fill_column)
 {
     if (fill_column > 1)

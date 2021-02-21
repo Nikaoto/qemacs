@@ -2219,6 +2219,7 @@ void do_what_cursor_position(EditState *s);
 void do_set_tab_width(EditState *s, int tab_width);
 void do_set_indent_width(EditState *s, int indent_width);
 void do_set_indent_tabs_mode(EditState *s, int val);
+void do_toggle_indent_tabs_mode(EditState *s);
 void display_window_borders(EditState *e);
 int find_style_index(const char *name);
 QEStyleDef *find_style(const char *name);
