@@ -1206,6 +1206,9 @@ int eb_delete_range(EditBuffer *b, int p1, int p2);
 static inline int eb_at_bol(EditBuffer *b, int offset) {
     return eb_prevc(b, offset, &offset) == '\n';
 }
+static inline int eb_at_eol(EditBuffer *b, int offset) {
+    return eb_nextc(b, offset, &offset) == '\n';
+}
 static inline int eb_next(EditBuffer *b, int offset) {
     eb_nextc(b, offset, &offset);
     return offset;
