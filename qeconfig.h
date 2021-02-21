@@ -389,6 +389,8 @@ static CmdDef basic_commands[] = {
           "set-previous-mode", do_set_next_mode, -1)
 
     /* tab & indent */
+    CMD0( KEY_CTRLC( KEY_CTRL('i')), KEY_NONE,
+          "untabulate", do_untab)
     CMD0( KEY_CTRLC( KEY_CTRL('t')), KEY_NONE,
           "toggle-indent-tabs-mode", do_toggle_indent_tabs_mode)
     CMD2( KEY_NONE, KEY_NONE,
