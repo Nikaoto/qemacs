@@ -1761,6 +1761,17 @@ void do_overwrite_mode(EditState *s, int argval)
         s->insert = !argval;
 }
 
+void do_tab_or_chain_untab(EditState *s, int argval)
+{
+    QEmacsState *qs = s->qe_state;
+    if (qs->last_cmd_func == (CmdFunc)do_untab) {
+        do_untab(s);
+        qs->this_cmd_func = (CmdFunc)do_untab;
+    } else {
+        do_tab(s, argval);
+    }
+}
+
 void do_tab(EditState *s, int argval)
 {
     /* CG: should do smart complete, smart indent, insert tab */
@@ -1839,6 +1850,8 @@ int do_untab_one_line(EditState *s)
     return offset_from_ind;
 }
 
+/* nika */
+/* Untabs one line or region */
 void do_untab(EditState *s)
 {
     if (s->region_style && s->b->mark != s->offset) {
