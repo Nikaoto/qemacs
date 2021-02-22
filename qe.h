@@ -2136,6 +2136,7 @@ void text_write_char(EditState *s, int key);
 void do_return(EditState *s, int move);
 void do_backspace(EditState *s, int argval);
 void do_delete_char(EditState *s, int argval);
+void do_tab_or_chain_untab(EditState *s, int argval);
 void do_tab(EditState *s, int argval);
 void do_untab(EditState *s);
 EditBuffer *new_yank_buffer(QEmacsState *qs, EditBuffer *base);

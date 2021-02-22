@@ -36,7 +36,7 @@ static CmdDef basic_commands[] = {
           "*" "i{Insert char: }|charvalue|" "ui")
     /* do_tab will not change read only buffer */
     CMD2( KEY_CTRL('i'), KEY_NONE,
-          "tabulate", do_tab, ESi, "ui")
+          "tab-or-chain-untab", do_tab_or_chain_untab, ESi, "ui")
     CMD2( KEY_META(KEY_CTRL('\\')), KEY_NONE,
           "indent-region", do_indent_region, ES, "*")
     //CMD2( KEY_SPC, KEY_NONE, "space", do_space, "*ui")
