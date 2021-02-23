@@ -1366,7 +1366,7 @@ static CmdDef dired_commands[] = {
           "dired-next-line", dired_up_down, 1)
     CMD1( 'p', KEY_CTRL('p'), /* KEY_UP */
           "dired-previous-line", dired_up_down, -1)
-    CMD0( 'r', KEY_NONE,
+    CMD0( 'g', KEY_NONE,
           "dired-refresh", dired_refresh)
     CMD1( '.', KEY_NONE,
           "dired-toggle-dot-files", dired_toggle_dot_files, -1)

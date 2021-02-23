@@ -1206,6 +1206,9 @@ int eb_delete_range(EditBuffer *b, int p1, int p2);
 static inline int eb_at_bol(EditBuffer *b, int offset) {
     return eb_prevc(b, offset, &offset) == '\n';
 }
+static inline int eb_at_eol(EditBuffer *b, int offset) {
+    return eb_nextc(b, offset, &offset) == '\n';
+}
 static inline int eb_next(EditBuffer *b, int offset) {
     eb_nextc(b, offset, &offset);
     return offset;
@@ -2133,7 +2136,9 @@ void text_write_char(EditState *s, int key);
 void do_return(EditState *s, int move);
 void do_backspace(EditState *s, int argval);
 void do_delete_char(EditState *s, int argval);
+void do_tab_or_chain_untab(EditState *s, int argval);
 void do_tab(EditState *s, int argval);
+void do_untab(EditState *s);
 EditBuffer *new_yank_buffer(QEmacsState *qs, EditBuffer *base);
 void do_append_next_kill(EditState *s);
 void do_kill(EditState *s, int p1, int p2, int dir, int keep);
@@ -2219,6 +2224,7 @@ void do_what_cursor_position(EditState *s);
 void do_set_tab_width(EditState *s, int tab_width);
 void do_set_indent_width(EditState *s, int indent_width);
 void do_set_indent_tabs_mode(EditState *s, int val);
+void do_toggle_indent_tabs_mode(EditState *s);
 void display_window_borders(EditState *e);
 int find_style_index(const char *name);
 QEStyleDef *find_style(const char *name);

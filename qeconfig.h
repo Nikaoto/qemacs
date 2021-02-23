@@ -36,7 +36,7 @@ static CmdDef basic_commands[] = {
           "*" "i{Insert char: }|charvalue|" "ui")
     /* do_tab will not change read only buffer */
     CMD2( KEY_CTRL('i'), KEY_NONE,
-          "tabulate", do_tab, ESi, "ui")
+          "tab-or-chain-untab", do_tab_or_chain_untab, ESi, "ui")
     CMD2( KEY_META(KEY_CTRL('\\')), KEY_NONE,
           "indent-region", do_indent_region, ES, "*")
     //CMD2( KEY_SPC, KEY_NONE, "space", do_space, "*ui")
@@ -389,6 +389,10 @@ static CmdDef basic_commands[] = {
           "set-previous-mode", do_set_next_mode, -1)
 
     /* tab & indent */
+    CMD0( KEY_CTRLC( KEY_CTRL('i')), KEY_NONE,
+          "untabulate", do_untab)
+    CMD0( KEY_CTRLC( KEY_CTRL('t')), KEY_NONE,
+          "toggle-indent-tabs-mode", do_toggle_indent_tabs_mode)
     CMD2( KEY_NONE, KEY_NONE,
           "set-tab-width", do_set_tab_width, ESi,
           "ui{Tab width: }")

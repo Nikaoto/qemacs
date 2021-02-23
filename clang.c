@@ -1262,7 +1262,7 @@ static int c_mode_init(EditState *s, EditBuffer *b, int flags)
     /* nika */
     if (s) {
         s->indent_tabs_mode = 0;
-        s->b->tab_width = 4;
+        s->b->tab_width = 8;
         s->indent_size = 4;
     }
     return 0;
@@ -1846,6 +1846,7 @@ ModeDef js_mode = {
     .keywords = js_keywords,
     .types = js_types,
     .indent_func = c_indent_line,
+    .mode_init = c_mode_init,
     .auto_indent = 1,
     .fallback = &c_mode,
 };
@@ -2248,7 +2249,7 @@ static int go_mode_init(EditState *s, EditBuffer *b, int flags)
     /* nika */
     if (s) {
         s->indent_tabs_mode = 1;
-        s->b->tab_width = 4;
+        s->b->tab_width = 8;
         s->indent_size = 4;
     }
     return 0;

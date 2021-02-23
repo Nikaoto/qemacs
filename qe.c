@@ -1761,6 +1761,17 @@ void do_overwrite_mode(EditState *s, int argval)
         s->insert = !argval;
 }
 
+void do_tab_or_chain_untab(EditState *s, int argval)
+{
+    QEmacsState *qs = s->qe_state;
+    if (qs->last_cmd_func == (CmdFunc)do_untab) {
+        do_untab(s);
+        qs->this_cmd_func = (CmdFunc)do_untab;
+    } else {
+        do_tab(s, argval);
+    }
+}
+
 void do_tab(EditState *s, int argval)
 {
     /* CG: should do smart complete, smart indent, insert tab */
@@ -1789,6 +1800,98 @@ void do_tab(EditState *s, int argval)
 
         s->offset += eb_insert_spaces(s->b, s->offset,
                                       indent * argval - (col % indent));
+    }
+}
+
+/* Untabs current line. Returns offset from indentation */
+int do_untab_one_line(EditState *s)
+{
+    /* For restoring point correctly */
+    int point = s->offset;
+    do_goto_indentation(s);
+    int offset_from_ind = point - s->offset;
+
+    /* No indentation to remove */
+    if (eb_at_bol(s->b, s->offset)) {
+        s->offset += offset_from_ind;
+        return offset_from_ind;
+    }
+
+    if (s->indent_tabs_mode) {
+        if (eb_read_one_byte(s->b, eb_prev(s->b, s->offset)) == '\t') {
+            eb_prevc(s->b, s->offset, &s->offset);
+            eb_delete_uchar(s->b, s->offset);
+        }
+    } else if (eb_read_one_byte(s->b, eb_prev(s->b, s->offset)) == ' ') {
+        for (int del = 0; del < s->indent_size &&
+                 !eb_at_bol(s->b, s->offset); del++) {
+            eb_delete_chars(s->b, s->offset, -1);
+        }
+    }
+
+    /* Point was at indentation */
+    if (offset_from_ind == 0) {
+        return 0;
+    }
+
+    /* Point was before indentation */
+    if (offset_from_ind < 0) {
+        int off = 0; /* Final offset from indentation */
+        while (off != offset_from_ind && !eb_at_bol(s->b, s->offset)) {
+            s->offset -= 1;
+            off -= 1;
+        }
+
+        return off;
+    }
+
+    /* Point was after indentation */
+    s->offset += offset_from_ind;
+    return offset_from_ind;
+}
+
+/* nika */
+/* Untabs one line or region */
+void do_untab(EditState *s)
+{
+    if (s->region_style && s->b->mark != s->offset) {
+        int swapped = 0;
+
+        /* Put point before mark */
+        if (s->offset > s->b->mark) {
+            swapped = 1;
+            int tmp = s->b->mark;
+            s->b->mark = s->offset;
+            s->offset = tmp;
+        }
+
+        /* Count number of lines we need to indent */
+        int linecount = 0;
+        int save = s->offset;
+        while (s->offset < s->b->mark) {
+            linecount++;
+            s->offset = eb_next_line(s->b, s->offset);
+        }
+        s->offset = save;
+
+        for (int i = 0; i < linecount; i++) {
+            do_untab_one_line(s);
+            s->offset = eb_next_line(s->b, s->offset);
+        }
+
+        /* Go back up */
+        for (int i = 0; i < linecount; i++) {
+            s->offset = eb_prev_line(s->b, s->offset);
+        }
+
+        /* Swap point and mark back */
+        if (swapped) {
+            int tmp = s->b->mark;
+            s->b->mark = s->offset;
+            s->offset = tmp;
+        }
+    } else {
+        do_untab_one_line(s);
     }
 }
 
@@ -2784,6 +2887,11 @@ void do_set_indent_width(EditState *s, int indent_width)
 void do_set_indent_tabs_mode(EditState *s, int val)
 {
     s->indent_tabs_mode = (val != 0);
+}
+
+void do_toggle_indent_tabs_mode(EditState *s)
+{
+    s->indent_tabs_mode = !s->indent_tabs_mode;
 }
 
 static void do_set_fill_column(EditState *s, int fill_column)
@@ -9041,7 +9149,7 @@ static void qe_init(void *opaque)
 
     /* nika: Init configs */
     qs->hilite_region = 1;
-    qs->default_tab_width = 4;
+    qs->default_tab_width = 8;
     qs->default_fill_column = 80;
     qs->backup_inhibited = 1;
     qs->fuzzy_search = 1; // fuzzy command completion

@@ -1691,7 +1691,7 @@ static int lua_mode_init(EditState *s, EditBuffer *b, int flags)
     /* nika */
     if (s) {
         s->indent_tabs_mode = 0;
-        s->b->tab_width = 3;
+        s->b->tab_width = 8;
         s->indent_size = 3;
     }
     return 0;
