@@ -9149,7 +9149,7 @@ static void qe_init(void *opaque)
 
     /* nika: Init configs */
     qs->hilite_region = 1;
-    qs->default_tab_width = 8;
+    qs->default_tab_width = 4;
     qs->default_fill_column = 80;
     qs->backup_inhibited = 1;
     qs->fuzzy_search = 1; // fuzzy command completion

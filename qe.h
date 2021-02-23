@@ -1716,7 +1716,7 @@ struct QEmacsState {
     int hilite_region;  /* hilite the current region when selecting */
     int mmap_threshold; /* minimum file size for mmap */
     int max_load_size;  /* maximum file size for loading in memory */
-    int default_tab_width;      /* 8 */
+    int default_tab_width;      /* 4 */
     int default_fill_column;    /* 70 */
     EOLType default_eol_type;  /* EOL_UNIX */
     int flag_split_window_change_focus;
