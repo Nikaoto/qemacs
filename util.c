@@ -365,8 +365,10 @@ int match_shell_handler(const char *p, const char *list)
             if (*p == '/')
                 base = p + 1;
         }
+
         if (memfind(list, base, p - base))
             return 1;
+
         if (p - base == 3 && !memcmp(base, "env", 3)) {
             while (*p != '\0' && *p != '\n') {
                 for (; qe_isblank(*p); p++)
@@ -510,31 +512,34 @@ int memfind(const char *list, const char *s, int len)
     if (!q)
         return 0;
 
-    for (;;) {
-        int i = 0;
-        for (;;) {
-            int c2 = q[i];
-            if (c2 == '|') {
-                if (i == len)
+    int i = 0;
+    while (*q != '\0') {
+        if (*q == s[i]) {
+            q++;
+            if (*q == '\0')
+                return (i + 1 == len);
+            if (*q == '|') {
+                if (i + 1 == len)
                     return 1;
-                break;
-            }
-            if (c2 == '\0') {
-                /* match the empty string against || only */
-                return (len > 0 && i == len);
-            }
-            if (c2 == s[i++] && i <= len)
+                q++;
+                i = 0;
                 continue;
-            for (q += i;;) {
-                c2 = *q++;
-                if (c2 == '\0')
-                    return 0;
-                if (c2 == '|')
-                    break;
             }
-            break;
+            i++;
+            continue;
         }
+
+        // Didn't match beginning of pattern in list.
+        // Find next '|'
+        while (*q != '|') {
+            q++;
+            if (*q == '\0')
+                return 0;
+        }
+        i = 0;
+        q++; // Char after '|'.
     }
+    return 0;
 }
 
 #if 0
